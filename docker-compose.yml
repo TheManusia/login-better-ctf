@@ -1,0 +1,31 @@
+version: "2"
+services:
+    www:
+        build: .
+        ports: 
+            - "8002:80"
+        volumes:
+            - ./www:/var/www/html/
+            - ./dump:/var/www/dump/
+        links:
+            - db
+        networks:
+            - default
+        environment:
+            - FLAG=reimu{4LW4y5_53cUR3_y0uR_5173}
+    db:
+        image: mysql:5.7
+        ports: 
+            - "3307:3306"
+        environment:
+            MYSQL_DATABASE: main_db
+            MYSQL_USER: user
+            MYSQL_PASSWORD: UserPassword
+            MYSQL_ROOT_PASSWORD: RootPassword
+        volumes:
+            - ./dump:/docker-entrypoint-initdb.d
+            - persistent:/var/lib/mysql
+        networks:
+            - default
+volumes:
+    persistent:
